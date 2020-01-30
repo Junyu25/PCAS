@@ -11,7 +11,7 @@ Arc = "~/Lab/23S-rRNA/Rawdata/Archaea.fasta"
 Bac = "~/Lab/23S-rRNA/Rawdata/Bacteria.fasta"
 Euk = "~/Lab/23S-rRNA/Rawdata/Eukaryota.fasta"
 Fa = "~/Lab/23S-rRNA/Rawdata/SILVA_132_LSURef.fasta"
-Full_ID = "~/Lab/23S-rRNA/Rawdata/SILVA_132_LSURef_full_ID.txt"
+#Full_ID = "~/Lab/23S-rRNA/Rawdata/SILVA_132_LSURef_full_ID.txt"
 Taxa = "~/Lab/23S-rRNA/Rawdata/SILVA_132_LSURef.tax"
 
 Primer = "/home/junyuchen/Lab/23S-rRNA/Primer/PrimerBac.fasta"
