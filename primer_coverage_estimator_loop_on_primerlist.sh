@@ -17,23 +17,23 @@
 #This script will run the primer coverage estimator based on a list of primers in a for loop 
 #a primer file for each primer will be generated
 
-#self contain command
-#Library file requirement:
-#NOTE1: Rscript must be activated, generally, can activate QIIME
+#This script starts from unaligned fa, theoretically, dereplicated or not will not matter, but is recommanded.
+#Library file requirement:Primer_prospector
+#NOTE1:  Primer_prospector must be activated
 
 if [ $# -ne 7 ]
 then
   echo ""
-    echo "Usage: primer_coverage_estimator_loop_on_primerlist.sh input_unaligned_fasta primer_list script_folder input_strain_tax input_unaligned_fasta_full_ID all_ID_folder fa_f_sub "
-    echo "Example:sh /thinker/net/biosoft/ytan_tools/primer_coverage_estimator_loop_on_primerlist.sh /thinker/net/biosoft/16S_ref_databases/SILVA132_EZ18_GG138/SILVA132-EZMay2018-GG13_8_merged_grouped.fa Probebase-201811-key-probes.txt /thinker/net/biosoft/ytan_tools/ /thinker/net/biosoft/16S_ref_databases/SILVA132_EZ18_GG138/SILVA132-EZMay2018-GG13_8_merged_7LV_uniq_strain.tax /thinker/net/biosoft/16S_ref_databases/SILVA132_EZ18_GG138/SILVA132-EZMay2018-GG13_8_merged_grouped_full_ID.txt /thinker/net/biosoft/16S_ref_databases/SILVA132_EZ18_GG138/intermediate/ SILVA132-EZMay2018-GG13_8_merged_grouped" 
+    echo "Usage: primer_coverage_estimator_loop_on_primerlist.sh input_unaligned_fasta primer_list script_folder input_strain_tax fa_f_sub database_summary_folder output_folder"
+    echo "Example:sh /home/yxtan/PCAS/scripts/primer_coverage_estimator_loop_on_primerlist.sh /home/yxtan/PCAS/other_databases/SILVA/SILVA_138/SILVA_138_SSURef_tax_silva_uniq.fna Probebase-201811-key-probes.txt /home/yxtan/PCAS/scripts/ /home/yxtan/PCAS/other_databases/SILVA/SILVA_138/SILVA_138_SSURef_tax_silva_uniq_strain.tax SILVA_138_SSURef_tax_silva_uniq /home/yxtan/PCAS/other_databases/SILVA_138_SSURef_tax_silva /home/yxtan/PCAS/primer_cov_sum" 
     echo ""
-    echo "input_unaligned_fasta - The unaligned fa, all Us must be convered to Ts already."
+    echo "input_unaligned_fasta - The unaligned fa, all Us must be convered to Ts already, and should be dereplicated already."
     echo "primer_list - The primer-list info from probase."
     echo "script_folder - the folder of scripts."
-    echo "input_strain_tax - the strain tax file (such as SILVA132-EZMay2018-GG13_8_merged_7LV_uniq_strain.tax) of the input_unaligned_fasta."
-    echo "input_unaligned_fasta_full_ID - the full ID file (such as SILVA132-EZMay2018-GG13_8_merged_grouped_full_ID.txt) of the input_unaligned_fasta."
-    echo "all_ID_folder - the folder path of all_Dx_id_txt of all level"
-    echo "fa_f_sub - the sub-str of fa file name：(such as SILVA132-EZMay2018-GG13_8_merged_grouped)"
+    echo "input_strain_tax - the uniq strain tax file of the input_unaligned_fasta."
+    echo "fa_f_sub - the sub-str of fa file name：(such as SILVA_138_SSURef_tax_silva_uniq)"
+    echo "database_summary_folder - the folder of dictionary json files of the database (such as /home/yxtan/PCAS/other_databases/SILVA_138_SSURef_tax_silva)."
+    echo "output_folder - the folder path of the primer analysis summaries should go, (such as /home/yxtan/PCAS/primer_cov_sum)"
     exit 1
 fi
 
@@ -42,9 +42,9 @@ fa_f=$1
 primer_list=$2
 script_folder=$3
 tax_f=$4
-fa_full_ID=$5
-all_ID_folder=$6
-fa_f_sub=$7
+fa_f_sub=$5
+database_summary_folder=$6
+output_folder=$7
 
 #check files
 if [ ! -s $fa_f ] 
@@ -59,14 +59,6 @@ if [ ! -s $tax_f ]
 then
   echo ""
   echo "Warning: The file $tax_f does not exist in primer_coverage_estimator_loop_on_primerlist.sh, exit."
-  echo ""
-  exit 1
-fi
-
-if [ ! -s $Ecoli_f ] 
-then
-  echo ""
-  echo "Warning: The file $Ecoli_f does not exist in primer_coverage_estimator_loop_on_primerlist.sh, exit."
   echo ""
   exit 1
 fi
@@ -86,6 +78,23 @@ then
   echo "Warning: The directory $script_folder does not exist in primer_coverage_estimator_loop_on_primerlist.sh, exit."
   echo ""
   exit 1
+fi
+
+if [ ! -d $database_summary_folder ] 
+then
+  echo ""
+  echo "Warning: The directory $database_summary_folder does not exist in primer_coverage_estimator.sh, exit."
+  echo ""
+  exit 1
+fi
+
+#Check folders
+if [ ! -d $output_folder ] 
+then
+  echo ""
+  echo "Warning: The directory $output_folder does not exist in primer_coverage_estimator.sh, generate it."
+  echo ""
+  mkdir $output_folder
 fi
 
 ################
@@ -112,6 +121,6 @@ do
     echo "step 2, run primer_coverage_estimator.sh on the Primers_ $i .txt."
     echo `date`
     ###############
-    sh $script_folder"/primer_coverage_estimator.sh" $fa_f "Primers_"$i".txt" $i $script_folder $tax_f $fa_full_ID $all_ID_folder $fa_f_sub
-
+    sh $script_folder"/primer_coverage_estimator.sh" $fa_f "Primers_"$i".txt" $i $script_folder $tax_f $fa_f_sub $database_summary_folder $output_folder
 done
+

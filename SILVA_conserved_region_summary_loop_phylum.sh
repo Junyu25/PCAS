@@ -20,17 +20,19 @@
 #Library file requirement:
 #NOTE1: Rscript must be activated, generally, can activate QIIME
 
-if [ $# -ne 5 ]
+if [ $# -ne 6 ]
 then
   echo ""
-    echo "Usage: SILVA_conserved_region_summary_loop_phylum.sh input_full_aligned_fasta Ecoli_MG1655_make_order step_width script_folder input_tax"
-    echo "Example:sh /thinker/net/biosoft/ytan_tools/SILVA_conserved_region_summary_loop_phylum.sh Bacteria.fa Ecoli.K-12substr.MG1655.fa_mark_order.txt 7 /thinker/net/biosoft/ytan_tools/ Bacteria.tax"
+    echo "Usage: SILVA_conserved_region_summary_loop_phylum.sh input_full_aligned_fasta Ecoli_MG1655_make_order step_width script_folder input_tax domain_name"
+    echo "Example:sh /thinker/net/biosoft/ytan_tools/SILVA_conserved_region_summary_loop_phylum.sh Bacteria.fa Ecoli.K-12substr.MG1655.fa_mark_order.txt 7 /thinker/net/biosoft/ytan_tools/ Bacteria.tax Bacteria"
     echo ""
     echo "input_full_aligned_fasta - The full-aligned fa."
     echo "Ecoli_MG1655_make_order - The path to Ecoli_MG1655_make_order file."
     echo "step_width - step_width used for summary, default is 7."
     echo "script_folder - the folder of scripts."
     echo "input_tax - The tax file of the full-aligned fa."
+    echo "domain_name - The domain_name used in the following files."
+    
     
        
     exit 1
@@ -42,6 +44,7 @@ Ecoli_f=$2
 step_width=$3
 script_folder=$4
 tax_f=$5
+domain_name=$6
 
 #check files
 if [ ! -s $fa_f ] 
@@ -91,9 +94,9 @@ do
     if [ ! -s $i"_ID.txt" ] 
     then
       echo ""
-      echo "Warning: The file $i _ID.txt did not generated in SILVA_conserved_region_summary_loop_phylum.sh, exit."
+      echo "Warning: The file $i _ID.txt did not generated in SILVA_conserved_region_summary_loop_phylum.sh, skip it."
       echo ""
-      break
+      continue
     fi
     
     ################
@@ -103,20 +106,20 @@ do
     #for samtools, the region file must be the chr:from-to format or only the chr, as a result, here, only the readname without > is used.
     #in order to have full line per read, must use -n option
     #in order to recognize the name of kindom and phylum,use two IDs in a file name
-    samtools faidx $fa_f -r $i"_ID.txt" -n 100000 -o $fa_f"_"$i".fa"
+    samtools faidx $fa_f -r $i"_ID.txt" -n 100000 -o $domain_name"-"$i".fa"
 
-    if [ ! -s $fa_f"_"$i".fa" ] 
+    if [ ! -s $domain_name"-"$i".fa" ] 
     then
       echo ""
-      echo "Warning: The file $fa_f"_"$i .fa did not generated in SILVA_conserved_region_summary_loop_phylum.sh, exit."
+      echo "Warning: The file $domain_name"-"$i .fa did not generated in SILVA_conserved_region_summary_loop_phylum.sh, skip it."
       echo ""
-      break
+      continue
     fi
     
     ################
     echo "step 3, run conserved_region_summary.sh on the phylum $i fa."
     echo `date`
     ###############
-    sh $script_folder"/conserved_region_summary.sh" $fa_f"_"$i".fa" $Ecoli_f $step_width $script_folder
+    sh $script_folder"/conserved_region_summary.sh" $domain_name"-"$i".fa" $Ecoli_f $step_width $script_folder
 
 done

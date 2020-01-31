@@ -11,7 +11,7 @@ Efa = open('database_len_summary.txt', 'w')
 # Afa = open('Archaea.fa', 'w')
 # Atax = open('Archaea.tax', 'w')
 
-with open(sys.argv[1]) as infile: #Open the file $fa_f at the path given by sys.argv[1], and assign the name infile to this file object
+with open(sys.argv[1]) as infile:
 	for i in infile:
 		if re.match('>', i):
 			isplit = str(i.rstrip())

@@ -20,7 +20,7 @@
 #Library file requirement:
 #NOTE1: Rscript must be activated, generally, can activate QIIME
 
-if [ $# -ne 4 ] #if the parameter is not equal to 4
+if [ $# -ne 4 ]
 then
   echo ""
     echo "Usage: conserved_region_summary.sh input_full_aligned_fasta Ecoli_MG1655_make_order step_width script_folder"
@@ -35,7 +35,7 @@ then
 fi
 
 #name the parameters
-fa_f=$1 #Assign fa_f to the first parameter 
+fa_f=$1
 Ecoli_f=$2
 step_width=$3
 script_folder=$4

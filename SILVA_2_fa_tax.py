@@ -2,8 +2,10 @@
 from __future__ import print_function
 import re,sys,os
 
-outfa = open('%s.fa' % sys.argv[1], 'w')
-outtax = open('%s.tax' %sys.argv[1], 'w')
+#the output is current folder
+tempfilename = os.path.split(sys.argv[1])[1]
+outfa = open('%s.fa' % tempfilename, 'w')
+outtax = open('%s.tax' % tempfilename, 'w')
 
 Counter=0
 
