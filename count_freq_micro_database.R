@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-#usage: Rscript count_freq_micro_database.R file_name=Bacteria.fa 
+#usage: Rscript count_freq_micro_database.R file_name=Bacteria.fa ref_matrix_file=Ecoli_MS107-1.fa_mark_order.txt
 #use aligned_SILVA file as input and calculate frequency of each base and output into a table.
 #the output will be the input of summray_freq.R
 
@@ -37,10 +37,15 @@ for (e in commandArgs()) {
 if (!exists("file_name")) {
 	stop("\nRscript count_freq_micro_database.R file_name=Bacteria.fa\nWarning: Usage: file_name file is not exist, please check the path. \n\n")
 }
+if (!exists("ref_matrix_file")) {
+	stop("\nRscript count_freq_micro_database.R ref_matrix_file=Ecoli_MS107-1.fa_mark_order.txt\nWarning: Usage: file_name file is not exist, please check the path. \n\n")
+}
 
 con <- file(file_name, "r")
 
-col_num=50000
+ref_matrix <- read.delim2(file=ref_matrix_file,header=TRUE,stringsAsFactors=FALSE)
+col_num=dim(ref_matrix)[2]
+#col_num=50000
 out_matrix <- matrix(0, nrow=6,ncol=col_num)
 rownames(out_matrix)=c("A","T","C","G","-",".")
 colnames(out_matrix)=1:col_num

@@ -86,7 +86,7 @@ fi
 echo "step 2, count the ATCG frequency by R."
 echo `date`
 ###############
-Rscript $script_folder"/count_freq_micro_database.R" file_name=$fa_f
+Rscript $script_folder"/count_freq_micro_database.R" file_name=$fa_f ref_matrix_file=$Ecoli_f
 
 if [ ! -s $fa_f"_freq_summary.txt" ] 
 then
