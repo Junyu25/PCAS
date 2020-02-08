@@ -123,6 +123,6 @@ sh $script_folder"/primer_coverage_estimator_loop_on_primerlist.sh" $derep_fa $p
 echo "step 3, run on the primer pairs based on the single primers."
 echo `date`
 ###############
-sh $script_folder"/primer_pair_coverage_estimator_loop_on_primerlist_pair.sh" $derep_fa $primer_pair_list $script_folder $input_strain_tax $fa_f_sub $database_summary_folder $output_folder
+bash $script_folder"/primer_pair_coverage_estimator_loop_on_primerlist_pair.sh" $derep_fa $primer_pair_list $script_folder $input_strain_tax $fa_f_sub $database_summary_folder $output_folder
 
 

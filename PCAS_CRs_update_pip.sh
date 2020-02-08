@@ -72,25 +72,25 @@ fi
 echo "step 1, run split and convert."
 echo `date`
 ###############
-python $script_folder"/SILVA_2_fa_tax.py" $fa_f
+python3 $script_folder"/SILVA_2_fa_tax.py" $fa_f
 fa_f_base=$(basename $fa_f)
 input_fa=$fa_f_base".fa"
 input_tax=$fa_f_base".tax"
 
-python $script_folder"/Split_fasta_base_on_domain.py" $fa_f
+python3 $script_folder"/Split_fasta_base_on_domain.py" $fa_f
 input_BAC="Bacteria.fasta"
 input_ARC="Archaea.fasta"
 input_EUK="Eukaryota.fasta"
 
-python $script_folder"/SILVA_2_fa_tax.py" $input_BAC
+python3 $script_folder"/SILVA_2_fa_tax.py" $input_BAC
 input_BAC_fa=$input_BAC".fa"
 input_BAC_tax=$input_BAC".tax"
 
-python $script_folder"/SILVA_2_fa_tax.py" $input_ARC
+python3 $script_folder"/SILVA_2_fa_tax.py" $input_ARC
 input_ARC_fa=$input_ARC".fa"
 input_ARC_tax=$input_ARC".tax"
 
-python $script_folder"/SILVA_2_fa_tax.py" $input_EUK
+python3 $script_folder"/SILVA_2_fa_tax.py" $input_EUK
 input_EUK_fa=$input_EUK".fa"
 input_EUK_tax=$input_EUK".tax"
 
