@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from __future__ import print_function
 import re,sys,os
-
+from Bio import SeqIO
 #This script is for checking whether the lenght of seqs in the aligned database are the same
 
 Efa = open('database_len_summary.txt', 'w')
@@ -10,7 +10,7 @@ Efa = open('database_len_summary.txt', 'w')
 # Btax = open('Bacteria.tax', 'w')
 # Afa = open('Archaea.fa', 'w')
 # Atax = open('Archaea.tax', 'w')
-
+'''
 with open(sys.argv[1]) as infile:
 	for i in infile:
 		if re.match('>', i):
@@ -19,7 +19,11 @@ with open(sys.argv[1]) as infile:
 			str_length = str(len(i.rstrip()))
 			#print str_length
 			print (isplit+" "+str_length, file = Efa)
-			
+'''		
+file = sys.argv[1]	
+for seq in SeqIO.parse(file, "fasta"):
+	print (seq.id+" "+str(len(seq)), file = Efa)
+
 
 Efa.close()
 # Etax.close()
